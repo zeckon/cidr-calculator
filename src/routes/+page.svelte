@@ -7,9 +7,12 @@
 
 	function calculateIpRange() {
 		try {
-			let parsedCIDR = new Cidr(IpAddress.of(cidr.split('/')[0]), parseInt(cidr.split('/')[1]));
-			startingIp = parsedCIDR.toIpRange().startIpAddr.toString();
-			endingIp = parsedCIDR.toIpRange().endIpAddr.toString();
+			let parsedCIDRIpRange = new Cidr(
+				IpAddress.of(cidr.split('/')[0]),
+				parseInt(cidr.split('/')[1])
+			).toIpRange();
+			startingIp = parsedCIDRIpRange.startIpAddr.toString();
+			endingIp = parsedCIDRIpRange.endIpAddr.toString();
 		} catch (e) {
 			startingIp = 'Invalid CIDR';
 			endingIp = 'Invalid CIDR';
@@ -19,9 +22,7 @@
 
 	function updateCidrFromIpRange() {
 		try {
-			let ipRange = new IpRange(IpAddress.of(startingIp), IpAddress.of(endingIp));
-
-			cidr = ipRange.toCidrs().toString();
+			cidr = new IpRange(IpAddress.of(startingIp), IpAddress.of(endingIp)).toCidrs().toString();
 		} catch (e) {
 			cidr = 'Invalid IP range';
 			console.error(e);
